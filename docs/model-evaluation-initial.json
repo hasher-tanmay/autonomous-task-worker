@@ -1,0 +1,1290 @@
+{
+  "model": "gpt-4.1-mini",
+  "provider_host": "api.openai.com",
+  "mode": "Real API, real Chromium, real HTTP portal, real SQLite",
+  "passed": 8,
+  "total": 10,
+  "cases": [
+    {
+      "name": "Natural wording + transient failure",
+      "task": "Find the newest bill from Company X and register it in the internal ledger.",
+      "fault": "fail_once",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 18.09,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31",
+      "save_attempts": {
+        "X-101": 2
+      },
+      "verified": {
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:18:27.909792+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:34.632534+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:35.698987+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:37.590235+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Temporary save failure"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:38.517427+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:18:41.213450+00:00",
+          "action": "save",
+          "message": "Retry saving invoice X-101 after initial failure.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:42.963796+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:43.815158+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Lost acknowledgement",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "lost_ack",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 8.17,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31",
+      "save_attempts": {
+        "X-101": 1
+      },
+      "verified": {
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:18:44.807211+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:46.305729+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:47.287421+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:48.577805+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Connection lost after save; outcome unknown"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:49.616151+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:50.574183+00:00",
+          "action": "guard",
+          "message": "Already verified; do not write again.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:18:52.060587+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Multiple invoices",
+      "task": "Enter all invoices from Company X into the ledger.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 10.2,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31\nX-100: USD 980.00, due 2026-09-30",
+      "save_attempts": {
+        "X-101": 1,
+        "X-100": 1
+      },
+      "verified": {
+        "X-100": {
+          "id": "X-100",
+          "vendor": "Company X",
+          "amount": "980.00",
+          "currency": "USD",
+          "due": "2026-09-30"
+        },
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-100",
+          "vendor": "Company X",
+          "amount": "980.00",
+          "currency": "USD",
+          "due": "2026-09-30"
+        },
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:18:52.899223+00:00",
+          "action": "plan",
+          "message": "Record all invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "all"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:54.502058+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101",
+              "X-100"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:55.486017+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:56.438676+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-100",
+            "vendor": "Company X",
+            "issued": "2026-09-02",
+            "amount": "980.00",
+            "currency": "USD",
+            "due": "2026-09-30"
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:57.479667+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:18:59.330948+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:00.330556+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": {
+            "id": "X-100",
+            "vendor": "Company X",
+            "amount": "980.00",
+            "currency": "USD",
+            "due": "2026-09-30"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:01.382727+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:02.257374+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Read-only different vendor",
+      "task": "Summarize all invoices from Acme Supplies.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "failed",
+      "passed": false,
+      "seconds": 46.12,
+      "summary": "Execution budget reached. Review the trace; completion was not established.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:19:03.186425+00:00",
+          "action": "plan",
+          "message": "Report all invoices for Acme Supplies.",
+          "observation": {
+            "operation": "report",
+            "vendor": "Acme Supplies",
+            "scope": "all"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:04.699771+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "A-201"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:05.703970+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "A-201",
+            "vendor": "Acme Supplies",
+            "issued": "2026-10-02",
+            "amount": "325.75",
+            "currency": "USD",
+            "due": "2026-10-20"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:06.669862+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:07.655579+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:09.551076+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:10.507210+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:11.511330+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:12.485166+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:13.751191+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:14.797854+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:15.975702+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:17.108141+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:19.351315+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:20.326792+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:21.458049+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:22.674501+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:23.770729+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:24.830149+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:25.990350+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:27.096727+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:28.114945+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:29.022492+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:29.914963+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:31.194500+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:32.113385+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:33.018873+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:33.976742+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:35.124691+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:36.049654+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:37.081950+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:39.076291+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:40.097963+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:41.017789+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:42.192051+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:43.168946+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:44.279720+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:45.246017+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:46.383078+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:47.358588+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:48.350797+00:00",
+          "action": "guard",
+          "message": "Save rejected: write goal and a validated source are required.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:48.481149+00:00",
+          "action": "failure",
+          "message": "Execution budget reached. Review the trace; completion was not established.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Approval and resume",
+      "task": "Record the latest invoice from Northstar Labs.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 8.31,
+      "summary": "Verified in the ledger:\nN-301: USD 7800.00, due 2026-10-28",
+      "save_attempts": {
+        "N-301": 1
+      },
+      "verified": {
+        "N-301": {
+          "id": "N-301",
+          "vendor": "Northstar Labs",
+          "amount": "7800.00",
+          "currency": "USD",
+          "due": "2026-10-28"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "N-301",
+          "vendor": "Northstar Labs",
+          "amount": "7800.00",
+          "currency": "USD",
+          "due": "2026-10-28"
+        }
+      ],
+      "rows_before_approval": 0,
+      "trace": [
+        {
+          "time": "2026-10-03T20:19:49.444519+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Northstar Labs.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Northstar Labs",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:50.934560+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "N-301"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:51.948874+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "issued": "2026-09-28",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:52.816904+00:00",
+          "action": "approval",
+          "message": "Approve recording N-301: USD 7800.00, due 2026-10-28? The sandbox requires approval above USD 5,000.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:52.961381+00:00",
+          "action": "approval",
+          "message": "User approved N-301 for this run only.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:19:54.922447+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:55.873472+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:56.718481+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Approval declined",
+      "task": "Record the latest invoice from Northstar Labs.",
+      "fault": "none",
+      "expected_status": "cancelled",
+      "actual_status": "cancelled",
+      "passed": true,
+      "seconds": 4.34,
+      "summary": "Approval declined. No further records were entered; earlier verified records remain in the ledger.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": 0,
+      "trace": [
+        {
+          "time": "2026-10-03T20:19:57.626382+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Northstar Labs.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Northstar Labs",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:19:59.215233+00:00",
+          "action": "discover",
+          "message": "Discover latest invoices from Northstar Labs.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "N-301"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:00.164398+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "issued": "2026-09-28",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:01.075630+00:00",
+          "action": "approval",
+          "message": "Approve recording N-301: USD 7800.00, due 2026-10-28? The sandbox requires approval above USD 5,000.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:01.152546+00:00",
+          "action": "approval",
+          "message": "User declined the pending record.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Missing source fields",
+      "task": "Record the latest invoice from Broken Fields Ltd.",
+      "fault": "none",
+      "expected_status": "needs_clarification",
+      "actual_status": "needs_clarification",
+      "passed": true,
+      "seconds": 2.27,
+      "summary": "No invoices found for Broken Fields Ltd.. Choose a vendor visible in the inbox.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:20:01.940301+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Broken Fields Ltd..",
+          "observation": {
+            "operation": "record",
+            "vendor": "Broken Fields Ltd.",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:03.427155+00:00",
+          "action": "clarification",
+          "message": "No invoices found for Broken Fields Ltd.. Choose a vendor visible in the inbox.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Permanent failure",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "always_fail",
+      "expected_status": "failed",
+      "actual_status": "needs_clarification",
+      "passed": false,
+      "seconds": 17.14,
+      "summary": "The attempts to save invoice X-101 have failed 3 times due to service unavailability. Should I retry saving the invoice again or take another action?",
+      "save_attempts": {
+        "X-101": 3
+      },
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:20:04.221849+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:05.716533+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:06.748218+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:07.978852+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:08.897331+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:10.405720+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:11.360493+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:12.370053+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:13.322708+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:14.291147+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:15.391454+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:16.323056+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:18.252684+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:19.221440+00:00",
+          "action": "verify",
+          "message": "",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:20:20.566652+00:00",
+          "action": "clarification",
+          "message": "The attempts to save invoice X-101 have failed 3 times due to service unavailability. Should I retry saving the invoice again or take another action?",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Corrupted persistence",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "corrupt",
+      "expected_status": "failed",
+      "actual_status": "failed",
+      "passed": true,
+      "seconds": 5.78,
+      "summary": "Verification mismatch for X-101. A conflicting row remains; manual review required.",
+      "save_attempts": {
+        "X-101": 1
+      },
+      "verified": {},
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "0.01",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:20:21.449647+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:22.966646+00:00",
+          "action": "discover",
+          "message": "",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:23.981688+00:00",
+          "action": "read",
+          "message": "",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:25.205480+00:00",
+          "action": "save",
+          "message": "",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:26.203891+00:00",
+          "action": "verify",
+          "message": "Persisted fields conflict with the source.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "0.01",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:20:26.357161+00:00",
+          "action": "failure",
+          "message": "Verification mismatch for X-101. A conflicting row remains; manual review required.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Unsupported request",
+      "task": "Pay the latest invoice from Company X.",
+      "fault": "none",
+      "expected_status": "needs_clarification",
+      "actual_status": "needs_clarification",
+      "passed": true,
+      "seconds": 0.77,
+      "summary": "The request exceeds the supported invoice scope. Specify record/report, one vendor, and latest/all.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:20:27.136999+00:00",
+          "action": "clarification",
+          "message": "The request exceeds the supported invoice scope. Specify record/report, one vendor, and latest/all.",
+          "observation": null
+        }
+      ]
+    }
+  ]
+}

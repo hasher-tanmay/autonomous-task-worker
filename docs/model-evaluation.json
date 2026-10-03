@@ -1,0 +1,1026 @@
+{
+  "model": "gpt-4.1-mini",
+  "provider_host": "api.openai.com",
+  "mode": "Real API, real Chromium, real HTTP portal, real SQLite",
+  "passed": 10,
+  "total": 10,
+  "cases": [
+    {
+      "name": "Natural wording + transient failure",
+      "task": "Find the newest bill from Company X and register it in the internal ledger.",
+      "fault": "fail_once",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 12.75,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31",
+      "save_attempts": {
+        "X-101": 2
+      },
+      "verified": {
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:04.283353+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:06.544464+00:00",
+          "action": "discover",
+          "message": "Starting by discovering the newest bill from Company X to register it in the internal ledger.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:08.001942+00:00",
+          "action": "read",
+          "message": "Reading the newest bill from Company X with ID X-101 to register it in the internal ledger.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:09.510324+00:00",
+          "action": "save",
+          "message": "Registering the newest bill X-101 from Company X in the internal ledger as requested.",
+          "observation": {
+            "notice": "Temporary save failure"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:11.014108+00:00",
+          "action": "verify",
+          "message": "The bill X-101 from Company X was recently saved, now verifying to confirm registration.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:34:13.023549+00:00",
+          "action": "save",
+          "message": "Retrying to register the newest bill X-101 from Company X in the internal ledger due to previous temporary save failure.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:14.246826+00:00",
+          "action": "verify",
+          "message": "The newest bill X-101 from Company X was already saved in the internal ledger. Now proceeding to verify it to confirm correct registration.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:15.238245+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Lost acknowledgement",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "lost_ack",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 8.58,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31",
+      "save_attempts": {
+        "X-101": 1
+      },
+      "verified": {
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:16.173496+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:19.213212+00:00",
+          "action": "discover",
+          "message": "Starting by discovering the latest invoice from Company X to record it accurately.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:20.333473+00:00",
+          "action": "read",
+          "message": "To record the latest invoice from Company X, I will first read invoice X-101 to gather all necessary details.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:21.821129+00:00",
+          "action": "save",
+          "message": "Saving the latest invoice X-101 from Company X with amount $1240.50 issued on 2026-10-01 for accurate recording.",
+          "observation": {
+            "notice": "Connection lost after save; outcome unknown"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:22.884596+00:00",
+          "action": "verify",
+          "message": "Verifying the saved data of the latest invoice X-101 from Company X to confirm accurate recording and resolve any discrepancies from the connection loss.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:23.861443+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Multiple invoices",
+      "task": "Enter all invoices from Company X into the ledger.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 12.78,
+      "summary": "Verified in the ledger:\nX-101: USD 1240.50, due 2026-10-31\nX-100: USD 980.00, due 2026-09-30",
+      "save_attempts": {
+        "X-101": 1,
+        "X-100": 1
+      },
+      "verified": {
+        "X-101": {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        },
+        "X-100": {
+          "id": "X-100",
+          "vendor": "Company X",
+          "amount": "980.00",
+          "currency": "USD",
+          "due": "2026-09-30"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "X-100",
+          "vendor": "Company X",
+          "amount": "980.00",
+          "currency": "USD",
+          "due": "2026-09-30"
+        },
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "1240.50",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:25.678512+00:00",
+          "action": "plan",
+          "message": "Record all invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "all"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:27.357540+00:00",
+          "action": "discover",
+          "message": "Starting discovery of all invoices from Company X to proceed with recording.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101",
+              "X-100"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:28.483073+00:00",
+          "action": "read",
+          "message": "Start reading invoice X-101 from Company X to record it.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:30.717549+00:00",
+          "action": "save",
+          "message": "Invoice X-101 from Company X has been read and is now ready to be saved into the ledger.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:32.050647+00:00",
+          "action": "verify",
+          "message": "Invoice X-101 has been saved and needs verification next to ensure accurate entry before proceeding.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:33.261390+00:00",
+          "action": "read",
+          "message": "Invoice X-101 from Company X has been verified. Proceeding to read the next invoice X-100 from Company X to enter all invoices from this vendor.",
+          "observation": {
+            "id": "X-100",
+            "vendor": "Company X",
+            "issued": "2026-09-02",
+            "amount": "980.00",
+            "currency": "USD",
+            "due": "2026-09-30"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:34.483856+00:00",
+          "action": "save",
+          "message": "Invoice X-100 from Company X has been read and is ready to be saved into the ledger as part of entering all invoices from this vendor.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:35.585937+00:00",
+          "action": "verify",
+          "message": "Invoice X-100 from Company X has been saved and now needs verification to ensure accurate entry before proceeding with all invoices from this vendor.",
+          "observation": {
+            "id": "X-100",
+            "vendor": "Company X",
+            "amount": "980.00",
+            "currency": "USD",
+            "due": "2026-09-30"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:36.668387+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Read-only different vendor",
+      "task": "Summarize all invoices from Acme Supplies.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 4.97,
+      "summary": "Read from source documents:\nA-201: USD 325.75, due 2026-10-20",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:37.598338+00:00",
+          "action": "plan",
+          "message": "Report all invoices for Acme Supplies.",
+          "observation": {
+            "operation": "report",
+            "vendor": "Acme Supplies",
+            "scope": "all"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:39.287022+00:00",
+          "action": "discover",
+          "message": "Starting discovery to find all invoices from Acme Supplies for a complete summary.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "A-201"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:40.467097+00:00",
+          "action": "read",
+          "message": "Reading invoice A-201 from Acme Supplies to summarize all invoices.",
+          "observation": {
+            "id": "A-201",
+            "vendor": "Acme Supplies",
+            "issued": "2026-10-02",
+            "amount": "325.75",
+            "currency": "USD",
+            "due": "2026-10-20"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:41.619638+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Approval and resume",
+      "task": "Record the latest invoice from Northstar Labs.",
+      "fault": "none",
+      "expected_status": "completed",
+      "actual_status": "completed",
+      "passed": true,
+      "seconds": 9.36,
+      "summary": "Verified in the ledger:\nN-301: USD 7800.00, due 2026-10-28",
+      "save_attempts": {
+        "N-301": 1
+      },
+      "verified": {
+        "N-301": {
+          "id": "N-301",
+          "vendor": "Northstar Labs",
+          "amount": "7800.00",
+          "currency": "USD",
+          "due": "2026-10-28"
+        }
+      },
+      "persisted_rows": [
+        {
+          "id": "N-301",
+          "vendor": "Northstar Labs",
+          "amount": "7800.00",
+          "currency": "USD",
+          "due": "2026-10-28"
+        }
+      ],
+      "rows_before_approval": 0,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:42.561863+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Northstar Labs.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Northstar Labs",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:44.560593+00:00",
+          "action": "discover",
+          "message": "Starting discovery process to locate the latest invoice from Northstar Labs.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "N-301"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:45.649381+00:00",
+          "action": "read",
+          "message": "Reading the latest invoice from Northstar Labs to record its details.",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "issued": "2026-09-28",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:46.965807+00:00",
+          "action": "approval",
+          "message": "Approve recording N-301: USD 7800.00, due 2026-10-28? The sandbox requires approval above USD 5,000.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:34:47.043376+00:00",
+          "action": "approval",
+          "message": "User approved N-301 for this run only.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:34:48.795350+00:00",
+          "action": "save",
+          "message": "Saving the latest Northstar Labs invoice N-301 after approval for recording.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:49.905603+00:00",
+          "action": "verify",
+          "message": "Invoice N-301 from Northstar Labs saved after approval; now verifying to confirm its recorded status.",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:50.989282+00:00",
+          "action": "finish",
+          "message": "Outcome verified. Evidence saved.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Approval declined",
+      "task": "Record the latest invoice from Northstar Labs.",
+      "fault": "none",
+      "expected_status": "cancelled",
+      "actual_status": "cancelled",
+      "passed": true,
+      "seconds": 4.77,
+      "summary": "Approval declined. No further records were entered; earlier verified records remain in the ledger.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": 0,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:51.860326+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Northstar Labs.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Northstar Labs",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:53.477712+00:00",
+          "action": "discover",
+          "message": "Starting by discovering the latest invoice from Northstar Labs to proceed with recording.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "N-301"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:54.647038+00:00",
+          "action": "read",
+          "message": "Reading the latest invoice from Northstar Labs (ID N-301) to collect data for recording.",
+          "observation": {
+            "id": "N-301",
+            "vendor": "Northstar Labs",
+            "issued": "2026-09-28",
+            "amount": "7800.00",
+            "currency": "USD",
+            "due": "2026-10-28"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:55.767557+00:00",
+          "action": "approval",
+          "message": "Approve recording N-301: USD 7800.00, due 2026-10-28? The sandbox requires approval above USD 5,000.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:34:55.839804+00:00",
+          "action": "approval",
+          "message": "User declined the pending record.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Missing source fields",
+      "task": "Record the latest invoice from Broken Fields Ltd.",
+      "fault": "none",
+      "expected_status": "needs_clarification",
+      "actual_status": "needs_clarification",
+      "passed": true,
+      "seconds": 2.91,
+      "summary": "No invoices found for Broken Fields Ltd.. Choose a vendor visible in the inbox.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:56.826498+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Broken Fields Ltd..",
+          "observation": {
+            "operation": "record",
+            "vendor": "Broken Fields Ltd.",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:34:58.751961+00:00",
+          "action": "clarification",
+          "message": "No invoices found for Broken Fields Ltd.. Choose a vendor visible in the inbox.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Permanent failure",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "always_fail",
+      "expected_status": "failed",
+      "actual_status": "failed",
+      "passed": true,
+      "seconds": 13.78,
+      "summary": "Save failed for X-101 after 3 attempts. No matching record found.",
+      "save_attempts": {
+        "X-101": 3
+      },
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:34:59.908388+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:02.103546+00:00",
+          "action": "discover",
+          "message": "No invoice ids available yet, starting with discovery to find latest invoice from Company X.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:03.330415+00:00",
+          "action": "read",
+          "message": "Reading latest invoice X-101 from Company X for recording.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:04.766498+00:00",
+          "action": "save",
+          "message": "Recording the latest invoice X-101 from Company X as requested.",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:06.532568+00:00",
+          "action": "verify",
+          "message": "Invoice X-101 from Company X was recorded but verification showed service was unavailable. Proceeding with verification to confirm the recorded details.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:35:08.191637+00:00",
+          "action": "save",
+          "message": "Retrying to record the latest invoice X-101 from Company X since the service was previously unavailable.",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:09.199649+00:00",
+          "action": "verify",
+          "message": "Invoice X-101 from Company X has been recorded but service was previously unavailable. Proceeding to verify to confirm the recorded details.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:35:11.279959+00:00",
+          "action": "save",
+          "message": "Retry saving the latest invoice X-101 from Company X after previous service unavailability to ensure it is recorded properly.",
+          "observation": {
+            "notice": "Service unavailable"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:12.389266+00:00",
+          "action": "verify",
+          "message": "No matching row after the maximum save attempts.",
+          "observation": null
+        },
+        {
+          "time": "2026-10-03T20:35:12.542650+00:00",
+          "action": "failure",
+          "message": "Save failed for X-101 after 3 attempts. No matching record found.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Corrupted persistence",
+      "task": "Record the latest invoice from Company X.",
+      "fault": "corrupt",
+      "expected_status": "failed",
+      "actual_status": "failed",
+      "passed": true,
+      "seconds": 6.23,
+      "summary": "Verification mismatch for X-101. A conflicting row remains; manual review required.",
+      "save_attempts": {
+        "X-101": 1
+      },
+      "verified": {},
+      "persisted_rows": [
+        {
+          "id": "X-101",
+          "vendor": "Company X",
+          "amount": "0.01",
+          "currency": "USD",
+          "due": "2026-10-31"
+        }
+      ],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:35:13.325657+00:00",
+          "action": "plan",
+          "message": "Record latest invoices for Company X.",
+          "observation": {
+            "operation": "record",
+            "vendor": "Company X",
+            "scope": "latest"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:15.084276+00:00",
+          "action": "discover",
+          "message": "Starting discovery to find the latest invoice from Company X for recording.",
+          "observation": {
+            "inbox": [
+              {
+                "id": "X-100",
+                "vendor": "Company X",
+                "issued": "2026-09-02"
+              },
+              {
+                "id": "X-101",
+                "vendor": "Company X",
+                "issued": "2026-10-01"
+              },
+              {
+                "id": "A-201",
+                "vendor": "Acme Supplies",
+                "issued": "2026-10-02"
+              },
+              {
+                "id": "N-301",
+                "vendor": "Northstar Labs",
+                "issued": "2026-09-28"
+              },
+              {
+                "id": "B-401",
+                "vendor": "Broken Fields Ltd",
+                "issued": "2026-10-03"
+              }
+            ],
+            "selected": [
+              "X-101"
+            ]
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:16.259408+00:00",
+          "action": "read",
+          "message": "Reading the latest invoice X-101 from Company X to record its details.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "issued": "2026-10-01",
+            "amount": "1240.50",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:17.454852+00:00",
+          "action": "save",
+          "message": "Saving the latest invoice X-101 from Company X to record its details as requested.",
+          "observation": {
+            "notice": "Saved. Reload the ledger to verify."
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:18.617121+00:00",
+          "action": "verify",
+          "message": "Persisted fields conflict with the source.",
+          "observation": {
+            "id": "X-101",
+            "vendor": "Company X",
+            "amount": "0.01",
+            "currency": "USD",
+            "due": "2026-10-31"
+          }
+        },
+        {
+          "time": "2026-10-03T20:35:18.782628+00:00",
+          "action": "failure",
+          "message": "Verification mismatch for X-101. A conflicting row remains; manual review required.",
+          "observation": null
+        }
+      ]
+    },
+    {
+      "name": "Unsupported request",
+      "task": "Pay the latest invoice from Company X.",
+      "fault": "none",
+      "expected_status": "needs_clarification",
+      "actual_status": "needs_clarification",
+      "passed": true,
+      "seconds": 0.78,
+      "summary": "The request exceeds the supported invoice scope. Specify record/report, one vendor, and latest/all.",
+      "save_attempts": {},
+      "verified": {},
+      "persisted_rows": [],
+      "rows_before_approval": null,
+      "trace": [
+        {
+          "time": "2026-10-03T20:35:19.562946+00:00",
+          "action": "clarification",
+          "message": "The request exceeds the supported invoice scope. Specify record/report, one vendor, and latest/all.",
+          "observation": null
+        }
+      ]
+    }
+  ]
+}

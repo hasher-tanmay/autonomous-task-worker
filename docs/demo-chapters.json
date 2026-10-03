@@ -1,0 +1,65 @@
+{
+  "planner": "model",
+  "chapters": [
+    {
+      "seconds": 1.12,
+      "title": "Autonomy and execution",
+      "caption": "A goal in plain English. The real model chooses actions; Chromium performs the work."
+    },
+    {
+      "seconds": 20.53,
+      "title": "Reliability: observe, then retry",
+      "caption": "The first save failed. The worker checked the ledger, retried, and verified the exact fields."
+    },
+    {
+      "seconds": 27.09,
+      "title": "Verification: saved row and browser evidence",
+      "caption": "The persisted record matches the source: X-101, USD 1,240.50, due 2026-10-31."
+    },
+    {
+      "seconds": 35.81,
+      "title": "Generalization: a read-only task",
+      "caption": "A different vendor and objective use the same engine. Reporting makes no ledger write."
+    },
+    {
+      "seconds": 54.14,
+      "title": "Generalization: multiple documents",
+      "caption": "The same worker records all Company X invoices instead of only the latest one."
+    },
+    {
+      "seconds": 78.67,
+      "title": "Product thinking: approval before a high-value write",
+      "caption": "Northstar's USD 7,800 record requires a human decision. The worker pauses before writing."
+    },
+    {
+      "seconds": 104.39,
+      "title": "Reliability: uncertain acknowledgement",
+      "caption": "The save commits but its acknowledgement is lost. Checking the ledger prevents a duplicate."
+    },
+    {
+      "seconds": 123.7,
+      "title": "Reliability: bounded failure",
+      "caption": "A permanent outage stops after three save attempts. No false completion claim is made."
+    },
+    {
+      "seconds": 147.5,
+      "title": "Verification: reject corrupted persistence",
+      "caption": "A corrupted amount fails exact-field verification. The conflicting record needs manual review."
+    },
+    {
+      "seconds": 164.23,
+      "title": "Product thinking: ask instead of guessing",
+      "caption": "A missing source due date stops the task. The worker does not invent a value."
+    },
+    {
+      "seconds": 176.47,
+      "title": "Engineering quality and technical understanding",
+      "caption": "A small planner, executor and verifier. Each component has one job; limitations are explicit."
+    },
+    {
+      "seconds": 192.12,
+      "title": "Measured evaluation evidence",
+      "caption": "Review real API and browser test results. These are observed results in a narrow sandbox, not a universal guarantee."
+    }
+  ]
+}
