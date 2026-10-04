@@ -2,7 +2,7 @@
 
 **Observed result: 18/18 browser integration checks and 10/10 real-model scenarios passed.**
 
-Tested on October 4, 2026 using **OpenAI `gpt-4.1-mini`**, real Chromium, an HTTP company portal and SQLite. The final video separately records the Gradio interface with Model planner selected. No planner or browser responses were mocked in the model evaluation.
+Tested on October 4, 2026 using **OpenAI `gpt-4.1-mini`**, real Chromium, an HTTP company portal and SQLite. The final video separately records the Gradio interface with AI worker selected. No planner or browser responses were mocked in the model evaluation.
 
 This supports the eight criteria within the stated invoice sandbox. It does **not** prove perfect reliability or generalization to arbitrary websites. Engineering quality and technical understanding also require human review and discussion.
 
@@ -14,8 +14,8 @@ This supports the eight criteria within the stated invoice sandbox. It does **no
 | Verification | Reloaded fields must match the observed source. Corrupted USD 0.01 persistence is rejected. Independent checks also confirmed expected row IDs, amounts and due dates in the evaluation results. | Conflicting records need manual review; no automatic repair or rollback. |
 | Generalization | Latest/all, record/report and three valid vendors use the same engine and tools. Reporting leaves the ledger empty. | One vendor per task, one portal, USD only. |
 | Engineering quality | Small planner/executor/verifier separation; typed actions; bounded budgets; unique database key; explicit database cleanup; real browser integration tests and CI configuration. | CI configuration is supplied; local passing tests do not establish that remote CI has run. |
-| Product thinking | Goals produce verified results and downloadable evidence. High-value writes ask for approval; unsupported payments and incomplete sources stop clearly. | No production authorization, payments or real inbox integration. |
-| Technical understanding | The video explains component responsibilities, why reconciliation precedes retry, why completion belongs to the verifier, and known limitations. README describes design decisions and components. | Understanding must still be demonstrated by the submitter in the technical discussion. |
+| Product thinking | Goals produce verified results, a saved invoice ledger and an activity view. High-value writes ask for approval; unsupported payments and incomplete sources stop clearly. | No production authorization, payments or real inbox integration. |
+| Technical understanding | README explains component responsibilities, why reconciliation precedes retry, why completion belongs to the verifier, and known limitations. The video shows the resulting user workflows. | Understanding must still be demonstrated by the submitter in the technical discussion. |
 
 ## Real-model scenario outcomes
 
